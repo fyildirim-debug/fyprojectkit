@@ -1,0 +1,258 @@
+/* FY tasarım dili — token'lar. Kaynak: fy-tasarim-dili skill'i, Bölüm 3.
+   Ürün yüzeyi (panel): zemin daima Ink, kart/gölge yok, tek vurgu Coral. */
+
+:root {
+  /* ---------- zemin ---------- */
+  --vx-ink: #0a0a0b;
+  --vx-ink-2: #0e0e10;
+  --vx-ink-3: #17171b;
+  --vx-paper: #f2f0ec;
+  --vx-bone: #ede7dc;
+  --vx: oklch(0.72 0.19 25);
+
+  --vx-glow-hero: color-mix(in oklab, var(--vx) 40%, transparent);
+  --vx-glow-contact: color-mix(in oklab, var(--vx) 26%, transparent);
+  --vx-border: color-mix(in oklab, var(--vx) 45%, transparent);
+  --vx-soft: color-mix(in oklab, var(--vx) 18%, transparent);
+
+  /* ---------- metin — koyu zemin ---------- */
+  --t-1: var(--vx-paper);
+  --t-2: rgba(242, 240, 236, 0.86);
+  --t-2b: rgba(242, 240, 236, 0.82);
+  --t-3a: rgba(242, 240, 236, 0.75);
+  --t-3b: rgba(242, 240, 236, 0.72);
+  --t-3: rgba(242, 240, 236, 0.62);
+  --t-link: rgba(242, 240, 236, 0.6);
+  --t-body: rgba(242, 240, 236, 0.55);
+  --t-4: rgba(242, 240, 236, 0.45);
+  --t-5: rgba(242, 240, 236, 0.4);
+  --t-6: rgba(242, 240, 236, 0.35);
+  --t-7: rgba(242, 240, 236, 0.3);
+  --t-stroke: rgba(242, 240, 236, 0.28);
+  --t-8: rgba(242, 240, 236, 0.25);
+  --t-ghost: rgba(242, 240, 236, 0.14);
+
+  /* ---------- çizgiler ---------- */
+  --hair: rgba(255, 255, 255, 0.12);
+  --hair-soft: rgba(255, 255, 255, 0.08);
+  --hair-mid: rgba(255, 255, 255, 0.1);
+  --hair-strong: rgba(255, 255, 255, 0.16);
+  --hair-btn: rgba(255, 255, 255, 0.18);
+  --hair-grid: rgba(255, 255, 255, 0.045);
+  --hair-chip: rgba(242, 240, 236, 0.16);
+  --hair-ring: rgba(242, 240, 236, 0.4);
+  --hair-row: rgba(255, 255, 255, 0.03);
+
+  /* ---------- tipografi ---------- */
+  --font-display: 'Anton', 'Anton Fallback', Impact, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'IBM Plex Mono Fallback', ui-monospace, monospace;
+
+  --fs-page: clamp(24px, 2.4vw, 34px); /* topbar sayfa başlığı  lh 1 */
+  --fs-section: clamp(19px, 2.3vw, 30px); /* panel başlığı        lh 1  ls -.01em */
+  --fs-kpi: clamp(28px, 3.6vw, 58px); /* KPI değeri            lh .9 tabular */
+  --fs-icard: clamp(22px, 2.1vw, 34px); /* proje adı             lh .92 ls -.015em */
+  --fs-empty: clamp(20px, 2.4vw, 32px); /* boş durum             lh 1 */
+  --fs-drawer: clamp(24px, 3vw, 40px); /* drawer başlığı        lh .92 */
+  --fs-login: clamp(40px, 6.4vw, 96px); /* giriş başlığı         lh .9 */
+
+  --fs-body-l: 14px;
+  --fs-body: 12px;
+  --fs-input: 13px;
+  --fs-value: 13px;
+  --fs-btn: 12px;
+  --fs-ui: 11px;
+  --fs-label: 10px;
+  --fs-micro: 9px;
+
+  --ls-tight: -0.015em;
+  --ls-tight-s: -0.01em;
+  --ls-chip: 0.12em;
+  --ls-btn: 0.16em;
+  --ls-tag: 0.18em;
+  --ls-rail: 0.2em;
+  --ls-nav: 0.22em;
+  --ls-label: 0.24em;
+  --ls-hint: 0.26em;
+  --ls-eyebrow: 0.3em;
+
+  /* ---------- boşluk ---------- */
+  --gutter: clamp(16px, 2.6vw, 30px);
+  --row-pad: clamp(12px, 1.8vh, 18px);
+  --col-pad: clamp(16px, 2vw, 28px);
+  --sec-gap: clamp(22px, 4vh, 40px);
+  --nav-w: 220px;
+  --aside-w: 340px;
+  --topbar-h: 64px;
+  --subbar-h: 56px;
+  --tabs-h: 46px;
+  --drawer-w: min(680px, 100%);
+  --drawer-pad: clamp(22px, 3.4vw, 44px);
+
+  /* ---------- şekil ---------- */
+  --r-pill: 999px;
+  --r-circle: 50%;
+  --dot: 5px;
+  --tap: 44px;
+
+  /* ---------- hareket ---------- */
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --t-color: 0.25s;
+  --t-hover: 0.3s;
+  --t-swap: 0.35s;
+
+  /* ---------- katman ---------- */
+  --z-main: 10;
+  --z-nav: 55;
+  --z-toast: 60;
+  --z-drawer: 9000;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--vx-ink);
+  color: var(--t-2);
+  font: 300 var(--fs-body) / 1.65 var(--font-mono);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+a {
+  color: var(--t-link);
+  text-decoration: none;
+  transition: color var(--t-color) var(--ease);
+}
+
+a:hover {
+  color: var(--vx);
+}
+
+::selection {
+  background: var(--vx);
+  color: var(--vx-ink);
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: color var(--t-color) var(--ease), border-color var(--t-color) var(--ease);
+}
+
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* Input dikdörtgendir; pill input yok. */
+input,
+textarea,
+select {
+  background: var(--vx-ink-3);
+  border: 1px solid var(--hair);
+  border-radius: 0;
+  padding: 11px 14px;
+  font: 400 var(--fs-input) / 1.5 var(--font-mono);
+  color: var(--vx-paper);
+  outline: none;
+  transition: border-color var(--t-color) var(--ease);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--vx);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--t-4);
+}
+
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 32px;
+  background-image: linear-gradient(45deg, transparent 50%, var(--t-4) 50%),
+    linear-gradient(135deg, var(--t-4) 50%, transparent 50%);
+  background-position: calc(100% - 18px) 55%, calc(100% - 13px) 55%;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+}
+
+select option {
+  background: var(--vx-ink-2);
+  color: var(--vx-paper);
+}
+
+:focus-visible {
+  outline: 1px solid var(--vx);
+  outline-offset: 4px;
+}
+
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 0;
+}
+
+kbd {
+  font: 400 var(--fs-label) / 1 var(--font-mono);
+  letter-spacing: var(--ls-tag);
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--hair-strong);
+  border-radius: var(--r-pill);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--t-7);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    transition-duration: 1ms !important;
+  }
+}
+
+@media (hover: none) {
+  a:hover {
+    color: inherit;
+  }
+}

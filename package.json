@@ -1,0 +1,18 @@
+{
+  "name": "takip",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "workspaces": [
+    "shared",
+    "web",
+    "mcp"
+  ],
+  "scripts": {
+    "dev": "npm run dev -w web",
+    "build": "npm run build -w shared && npm run build -w web && npm run build -w mcp",
+    "typecheck": "npm run typecheck -w shared && npm run typecheck -w web && npm run typecheck -w mcp",
+    "mcp": "npm run start -w mcp",
+    "setup:appwrite": "node scripts/setup-appwrite.mjs"
+  }
+}

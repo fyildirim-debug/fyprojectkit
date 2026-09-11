@@ -1,0 +1,41 @@
+# Dokploy'da Compose uygulaması olarak eklenir.
+#
+# Traefik servislere `dokploy-network` üzerinden ulaşır; host portu yayınlamaya
+# gerek yok. Domainler Dokploy panelinden tanımlanır:
+#   <alan-adi>       path /      → serviceName: web,  port 80
+#   <alan-adi>       path /mcp   → serviceName: mcp,  port 8787
+#
+# VITE_* değerleri arayüze BUILD anında gömülür (statik SPA), MCP sunucusunun
+# APPWRITE_* değerleri ise çalışma anında okunur. İkisini de Dokploy'un
+# environment panelinden ver.
+services:
+  web:
+    build:
+      context: .
+      dockerfile: web/Dockerfile
+      args:
+        VITE_APPWRITE_ENDPOINT: ${VITE_APPWRITE_ENDPOINT:-}
+        VITE_APPWRITE_PROJECT_ID: ${VITE_APPWRITE_PROJECT_ID:-}
+        VITE_APPWRITE_DATABASE_ID: ${VITE_APPWRITE_DATABASE_ID:-takip}
+        VITE_MCP_BASE_URL: ${VITE_MCP_BASE_URL:-}
+    restart: unless-stopped
+    networks:
+      - dokploy-network
+
+  mcp:
+    build:
+      context: .
+      dockerfile: mcp/Dockerfile
+    restart: unless-stopped
+    environment:
+      PORT: 8787
+      APPWRITE_ENDPOINT: ${APPWRITE_ENDPOINT:-}
+      APPWRITE_PROJECT_ID: ${APPWRITE_PROJECT_ID:-}
+      APPWRITE_DATABASE_ID: ${APPWRITE_DATABASE_ID:-takip}
+      APPWRITE_API_KEY: ${APPWRITE_API_KEY:-}
+    networks:
+      - dokploy-network
+
+networks:
+  dokploy-network:
+    external: true
